@@ -22,6 +22,8 @@ nMembers = c(5,5)
 
 simSBM(blockPMat, nMembers)
 ```
+
+```
 ##  10 x 10 sparse Matrix of class "dsCMatrix"
 ##                         
 ##  [1,] . . 1 1 1 . . . . 1
