@@ -2,8 +2,10 @@ Package: SpecClustPack
 Title: A bunch of R functions related to spectral clustering.
 Version: 0.1
 Authors@R: "Norbert Binkiewicz <norbertbin@gmail.com> [aut, cre]"
-Description: Includes functions that are useful for conducting and studying 
-spectral clustering (eg. simulate from SBM).
-Depends: R (>= 3.0.2)
-License: What license is it under?
+Description: Includes functions that are useful for conducting and studying
+    spectral clustering (eg. simulate from SBM).
+Depends:
+    R (>= 3.0.2),
+    Matrix
+License: GPL-3
 LazyData: true
