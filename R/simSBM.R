@@ -1,4 +1,4 @@
-# Simulates a matrix from the stochastic block model.
+#' Simulates a matrix from the Stochastic Blockmodel.
 #'
 #' @param blockPMat The block probability matrix.
 #' @param nMembers A vector specifying the number of nodes in each block.
@@ -37,7 +37,7 @@ simSBM <- function(blockPMat, nMembers) {
     return( forceSymmetric(triu(adjMat, k=1)) )
 }
 
-# Simulates a Bernoulli random vector.
+#' Simulates a Bernoulli random vector.
 #'
 #' @param nElem The number of elements in the vector.
 #' @param p The probability of an element being equal to one.
