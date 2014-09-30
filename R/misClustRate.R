@@ -4,7 +4,7 @@
 #' @param nMembers The number of nodes in each block
 #'
 #' @export
-#' @return The proportion of misclustered nodes up to identifiablity.
+#' @return The proportion of misclustered nodes up to identifiability.
 #'
 #' @keywords clustering
 misClustRate <- function(clusters, nMembers) {

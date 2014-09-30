@@ -11,7 +11,7 @@ misClustRate(clusters, nMembers)
 \item{nMembers}{The number of nodes in each block}
 }
 \value{
-The proportion of misclustered nodes up to identifiablity.
+The proportion of misclustered nodes up to identifiability.
 }
 \description{
 Calculates the empirical proportion of misclustered nodes.

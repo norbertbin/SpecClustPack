@@ -51,8 +51,14 @@ clusters
 ## [1] 1 1 1 1 1 2 2 2 2 2
 ```
 
-Compute Mis-clustering Rate
+Compute the Mis-clustering Rate
 ===
+The function **misClustRate** computes the proportion of mis-clustered nodes
+(up to identifiability) given the cluster sizes.
 ```r
 misClustRate(clusters, nMembers)
+```
+
+```
+## 0
 ```
