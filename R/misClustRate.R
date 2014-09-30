@@ -7,7 +7,7 @@
 #' @return The proportion of misclustered nodes up to identifiablity.
 #'
 #' @keywords clustering
-misClustRateClust <- function(clusters, nMembers) {
+misClustRate <- function(clusters, nMembers) {
 
   nNodes = sum(nMembers)
   nBlocks = length(nMembers)
