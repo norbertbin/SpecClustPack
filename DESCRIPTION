@@ -6,6 +6,9 @@ Description: Includes functions that are useful for conducting and studying
     spectral clustering (eg. simulate from SBM).
 Depends:
     R (>= 3.0.2),
-    Matrix
+    Matrix,
+    rARPACK,
+    biganalytics,
+    foreach
 License: GPL-3
 LazyData: true
