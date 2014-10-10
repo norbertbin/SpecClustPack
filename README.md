@@ -37,6 +37,18 @@ adjMat
 ## [10,] 1 . . . . 1 1 1 . .
 ```
 
+Plot the SBM Probability Matrix
+===
+```r
+plotSBM(blockPMat, nMembers)
+```
+
+Plot the Simulated Adjacency Matrix
+===
+```r
+plotAdj(adjMat)
+```
+
 Run Spectral Clustering
 ===
 By default, the **specClust** function uses regularized spectral 
