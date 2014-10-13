@@ -44,6 +44,35 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
     }
 }
 
+#' Spectral clustering of a covariate matrix (low rank).
+#'
+#' @param covMat A matrix of covariates with each column corresponding to
+#' a covariate.
+#' @param nBlocks The number of clusters.
+#' @param nIter Number of kmeans iterations (default is 10).
+#'
+#' @export
+#' @return Returns a vector of row cluster assignments.
+#'
+#' @examples
+#' covProbMat = matrix(c(.6, .2, .2, .6), nrow = 2)
+#' nMembers = c(50, 50)
+#' covMat = simBernCovar(covProbMat, nMembers)
+#' specClustCov(covMat, nBlocks = 2)
+specClustCov <- function(covMat, nBlocks, nIter = 10) {
+
+    #center and normalize columns
+    covMat = scale(covMat, center = T,
+        scale = sqrt(Matrix::colSums(covMat^2)))    
+    
+    svdDecomp = svd(covMat)
+
+    kmeansResult = bigkmeans(svdDecomp$u[,1:nBlocks], nBlocks,
+        nstart = nIter)
+    
+    return(kmeansResult$cluster)
+}
+
 # ---------------------------------------------------------------------
 # Helper methods
 # ---------------------------------------------------------------------

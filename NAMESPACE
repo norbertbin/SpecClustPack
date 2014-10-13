@@ -3,5 +3,7 @@
 export(misClustRate)
 export(plotAdj)
 export(plotSBM)
+export(simBernCovar)
 export(simSBM)
 export(specClust)
+export(specClustCov)
