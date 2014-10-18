@@ -25,11 +25,21 @@ plotAdj <- function(adjMat, membership = NULL) {
 #'
 #' @export 
 #' 
-plotSBM <- function(blockPMat, nMembers) {
+plotSBM <- function(blockPMat, nMembers = NULL) {
+
+    nBlocks = dim(blockPMat)[1]
+    # if nMembers not given assume equal number of nodes in each block
+    if(is.null(nMembers)) {
+        nMembers = rep(1, nBlocks)
+    }
+    
     #adjust the block end points based on number of members
     blockGrid = c(0, cumsum(nMembers/sum(nMembers)))
 
-    image(blockGrid, blockGrid, blockPMat, zlim = c(0,1), xlim = c(0,1),
-          ylim = c(0,1), col = gray(0:100/100), axes = F, xlab = "",
-          ylab = "", lwd = .1)
+    zlimMax = min(1, 1.2*max(blockPMat))
+    zlimMin = max(0, .8*min(blockPMat))
+    
+    image(blockGrid, blockGrid, blockPMat[,nBlocks:1],
+          zlim = c(zlimMin, zlimMax), xlim = c(0,1), ylim = c(0,1),
+          col = gray(1000:0/1000), axes = F, xlab = "", ylab = "", lwd = .1)
 }
