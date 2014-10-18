@@ -28,12 +28,12 @@ adjMat
 ##  [1,] . . 1 1 1 . . . . 1
 ##  [2,] . . 1 1 1 . . 1 . .
 ##  [3,] 1 1 . . . . . . . .
-##  [4,] 1 1 . . 1 . . . . .
+##  [4,] 1 1 . . 1 . . . 1 .
 ##  [5,] 1 1 . 1 . . . . . .
 ##  [6,] . . . . . . 1 1 . 1
 ##  [7,] . . . . . 1 . 1 . 1
 ##  [8,] . 1 . . . 1 1 . . 1
-##  [9,] . . . . . . . . . .
+##  [9,] . . . 1 . . . . . .
 ## [10,] 1 . . . . 1 1 1 . .
 ```
 
@@ -60,7 +60,7 @@ clusters
 ```
 
 ```
-## [1] 1 1 1 1 1 2 2 2 2 2
+## [1] 1 1 1 1 1 2 2 2 1 2
 ```
 
 Compute the Mis-clustering Rate
@@ -72,5 +72,19 @@ misClustRate(clusters, nMembers)
 ```
 
 ```
-## 0
+## [1] 0.1
+```
+
+Estimate SBM Probabilities
+===
+The function **estSBM** estimates the block probability matrix given the
+adjacency matrix and the cluster assignments.
+```r
+estSBM(adjMat, clusters)
+```
+
+```
+##            [,1]       [,2]
+## [1,] 1.00000000 0.08333333
+## [2,] 0.08333333 0.53333333
 ```
