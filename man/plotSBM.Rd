@@ -3,7 +3,7 @@
 \alias{plotSBM}
 \title{Plots the Stochastic Blockmodel.}
 \usage{
-plotSBM(blockPMat, nMembers)
+plotSBM(blockPMat, nMembers = NULL)
 }
 \arguments{
 \item{blockPMat}{The block probability matrix.}

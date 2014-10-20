@@ -9,7 +9,7 @@ using devtools.
 
 ```r
 library(devtools)
-install_github("SpecClustPack", "norbertbin")
+install_github("norbertbin/SpecClustPack")
 ```
 
 Simulate from Stochastic Blockmodel
