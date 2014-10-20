@@ -12,10 +12,8 @@ plotAdj <- function(adjMat, membership = NULL) {
         adjMat = adjMat[membership, membership]
     }
 
-   # This function (Matrix::image) has a bug that cuts off the first and last
-   # row of the matrix. To correct for this we specify ylim manually.
    image(adjMat, scales = list(draw=F), xlab = NULL, ylab = NULL, lwd = .1,
-         sub = NULL, ylim = c(0, dim(adjMat)[1] + 1) )
+         sub = NULL)
 }
 
 #' Plots the Stochastic Blockmodel.
