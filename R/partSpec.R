@@ -46,8 +46,11 @@ partSpecClust <- function(adjMat, nBlocks, subSampleSize, rowNorm = T,
     if(rowNorm == T) {
         # project eigenvector rows onto sphere
         approxEV = approxEV/sqrt(rowSums(approxEV^2))
+        
+        # if there were rows of zeros need to handle NaN's
+        approxEV[is.nan(approxEV)] = 0
     }
-
+    
     kmeansResult = bigkmeans(approxEV, nBlocks, nstart = nIter)
 
     if(verbose == T) {
