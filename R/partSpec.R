@@ -9,6 +9,7 @@
 #' @param verbose If true, return a list with cluster assignments, within
 #' cluster sum of squares, and eigendecomposition (default is false). 
 #'
+#' @importFrom Matrix rowSums
 #' @export
 #' @return A vector of node cluster assignments. Or, if verbose is set to true
 #' a list with cluster assignments and additional information.
@@ -20,7 +21,7 @@ partSpecClust <- function(adjMat, nBlocks, subSampleSize, rowNorm = T,
     nNodes = dim(adjMat)[1]
     
     # get sorted node degrees with indices 
-    deg = rowSums(adjMat)
+    deg = rowSums(adjMat) # Matrix:: giving error here used @importFrom
     sortDeg = sort.int(deg, decreasing = T, index.return = T)
     topDegInd = sortDeg$ix[1:subSampleSize]
     
@@ -31,20 +32,23 @@ partSpecClust <- function(adjMat, nBlocks, subSampleSize, rowNorm = T,
     # get subsample adjacency matrix
     subAdjMat = adjMat[topDegInd, topDegInd]
 
+    # eigs can only handle dgCMatrix
+    subAdjMat = as(subAdjMat, "dgCMatrix")
+    
     # compute approx. eigenvectors
-    # for numerical stability get extra eigenvector from eigs
-    subEigen = eigs(subAdjMat, nBlocks + 1)
+    # for numerical stability get 3 extra eigenvectors from eigs
+    subEigen = eigs(subAdjMat, nBlocks + 3)
     partBMat = adjMat[-topDegInd, topDegInd]
-    tempU = partBMat %*% subEigen$vectors[,1:nBlocks] %*%
-        solve(Diagonal(subEigen$values[1:nBlocks]))
-    approxEV = rbind2(eigen$vectors[,1:nBlocks], tempU)
+    tempU = as.matrix(partBMat %*% subEigen$vectors[,1:nBlocks] %*%
+        solve(Diagonal(nBlocks, subEigen$values[1:nBlocks])))
+    approxEV = rbind2(subEigen$vectors[,1:nBlocks], tempU)
 
     if(rowNorm == T) {
         # project eigenvector rows onto sphere
         approxEV = approxEV/sqrt(rowSums(approxEV^2))
     }
 
-    kmeansResult = bigkmeans(approxEVP, nBlocks, nstart = nIter)
+    kmeansResult = bigkmeans(approxEV, nBlocks, nstart = nIter)
 
     if(verbose == T) {
         return( list(cluster = kmeansResult$cluster[invMapping],
