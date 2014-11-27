@@ -2,6 +2,7 @@
 
 export(estSBM)
 export(misClustRate)
+export(partSpecClust)
 export(plotAdj)
 export(plotSBM)
 export(simBernCovar)
