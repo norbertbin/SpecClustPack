@@ -91,9 +91,9 @@ estSBM(adjMat, clusters)
 Partial Spectral Clustering
 ===
 
-The **partSpecClust** function only runs an eigendecomposition on the highest 
-degree nodes in the network and uses the Nystrom extension to compute the 
-full eigenvectors 
+The **partSpecClust** function only runs an eigendecomposition on the adjacency
+matrix of the highest degree nodes in the network and uses the Nystrom 
+extension to approximate the full eigenvectors 
 [(Belabbas and Wolfe, 2009)](http://www.pnas.org/content/106/2/369.full). 
 The approximate eigenvectors are then used for spectral clustering. The 
 parameter *subSampleSize* specifies how many of the top degree nodes should be 
