@@ -24,11 +24,14 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 
     similarityMat = getSimilarityMat(adjMat, method)
 
-    eigsDecomp = eigs(similarityMat, nBlocks + 1)
+    eigsDecomp = eigs(similarityMat, nBlocks + 3)
 
     if(rowNorm == T) {
         eigsDecomp$vectors[,1:nBlocks] = eigsDecomp$vectors[,1:nBlocks] /
             sqrt(rowSums(eigsDecomp$vectors[,1:nBlocks]^2))
+
+        # if there were rows of zeros need to handle NaN's
+        eigsDecomp$vectors[is.nan(eigsDecomp$vectors)] = 0
     }
     
     kmeansResult = bigkmeans(eigsDecomp$vectors[,1:nBlocks], nBlocks,
@@ -37,8 +40,8 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
     if(verbose == T) {
         return( list(cluster = kmeansResult$cluster,
                      wcss = kmeansResult$tot.withinss,
-                     eigenVals = eigsDecomp$values,
-                     eigenVecs = eigsDecomp$vectors) )
+                     eigenVals = eigsDecomp$values[1:(nBlocks+1)],
+                     eigenVecs = eigsDecomp$vectors[,1:(nBlocks+1)]) )
     } else {
         return(kmeansResult$cluster)
     }
