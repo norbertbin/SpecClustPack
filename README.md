@@ -5,7 +5,7 @@ A bunch of R functions related to spectral clustering.
 Installation
 ===
 The **SpecClustPack** package can be installed in R directly from GitHub by 
-using devtools. 
+using **devtools**. 
 
 ```r
 library(devtools)
@@ -52,11 +52,10 @@ plotAdj(adjMat)
 Run Spectral Clustering
 ===
 By default, the **specClust** function uses regularized spectral 
-clustering with row normalization, but can be adjusted by changing 
+clustering [(Qin and Rohe, 2013)](http://papers.nips.cc/paper/5099-regularized-spectral-clustering-under-the-degree-corrected-stochastic-blockmodel) with row normalization, but can be adjusted by changing 
 the *method* and *rowNorm* parameters. 
 ```r
-clusters = specClust(adjMat, 2)
-clusters
+(clusters = specClust(adjMat, nBlocks = 2))
 ```
 
 ```
@@ -87,4 +86,23 @@ estSBM(adjMat, clusters)
 ##            [,1]       [,2]
 ## [1,] 1.00000000 0.08333333
 ## [2,] 0.08333333 0.53333333
+```
+
+Partial Spectral Clustering
+===
+
+The **partSpecClust** function only runs an eigendecomposition on the highest 
+degree nodes in the network and uses the Nystrom extension to compute the 
+full eigenvectors 
+[(Belabbas and Wolfe, 2009)](http://www.pnas.org/content/106/2/369.full). 
+The approximate eigenvectors are then used for spectral clustering. The 
+parameter *subSampleSize* specifies how many of the top degree nodes should be 
+used.
+
+```r
+(clusters = partSpecClust(adjMat, nBlocks = 2, subSampleSize = 8))
+```
+
+```
+## [1] 1 1 1 1 1 2 2 2 1 2
 ```
