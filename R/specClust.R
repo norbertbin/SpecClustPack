@@ -53,6 +53,8 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 #' a covariate.
 #' @param nBlocks The number of clusters.
 #' @param nIter Number of kmeans iterations (default is 10).
+#' @param center A boolean indicating if the covariate matrix columns should
+#' be centered.
 #'
 #' @export
 #' @return Returns a vector of row cluster assignments.
@@ -62,10 +64,10 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 #' nMembers = c(50, 50)
 #' covMat = simBernCovar(covProbMat, nMembers)
 #' specClustCov(covMat, nBlocks = 2)
-specClustCov <- function(covMat, nBlocks, nIter = 10) {
+specClustCov <- function(covMat, nBlocks, nIter = 10, center = F) {
 
     #center and normalize columns
-    covMat = scale(covMat, center = T,
+    covMat = scale(covMat, center = center,
         scale = sqrt(Matrix::colSums(covMat^2)))    
     
     svdDecomp = svd(covMat)
