@@ -4,13 +4,15 @@
 \alias{plotAdj}
 \title{Plots the adjacency matrix.}
 \usage{
-plotAdj(adjMat, membership = NULL)
+plotAdj(adjMat, membership = NULL, lines = T)
 }
 \arguments{
 \item{adjMat}{The adjacency matrix to be plotted.}
 
 \item{membership}{The node membership used to reorder the adjacency matrix
 before plotting.}
+
+\item{lines}{If true, plot lines separating blocks when membership given.}
 }
 \description{
 Plots the adjacency matrix.

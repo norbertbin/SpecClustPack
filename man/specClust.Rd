@@ -5,7 +5,7 @@
 \title{Performs spectral clustering on an adjacency matrix.}
 \usage{
 specClust(adjMat, nBlocks, method = "regLaplacian", rowNorm = T,
-  nIter = 10, verbose = F)
+  nIter = 20, verbose = F)
 }
 \arguments{
 \item{adjMat}{A graph adjacency matrix.}

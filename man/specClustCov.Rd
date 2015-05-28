@@ -4,7 +4,7 @@
 \alias{specClustCov}
 \title{Spectral clustering of a covariate matrix (low rank).}
 \usage{
-specClustCov(covMat, nBlocks, nIter = 10, center = F)
+specClustCov(covMat, nBlocks, nIter = 20, center = F, jit = F)
 }
 \arguments{
 \item{covMat}{A matrix of covariates with each column corresponding to
