@@ -16,7 +16,7 @@
 #'
 #' @keywords spectral clustering
 specClust <- function(adjMat, nBlocks, method = "regLaplacian",
-                             rowNorm = T, nIter = 10, verbose = F) {
+                             rowNorm = T, nIter = 20, verbose = F) {
     
     # eigs does not support dsCMatrix type at this time
     # Matrix has Namespace problems when using dsCMatrix
@@ -24,7 +24,11 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 
     similarityMat = getSimilarityMat(adjMat, method)
 
-    eigsDecomp = eigs(similarityMat, nBlocks + 3)
+    # eigsDecomp = eigs(similarityMat, nBlocks + 3)
+
+    eigsDecomp = irlba(similarityMat, nu = nBlocks + 1, nv = 0, 
+        m_b = max(20, 2*nBlocks))
+    eigsDecomp = list(vectors = eigsDecomp$u,  values = eigsDecomp$d)
 
     if(rowNorm == T) {
         eigsDecomp$vectors[,1:nBlocks] = eigsDecomp$vectors[,1:nBlocks] /
@@ -64,7 +68,7 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 #' nMembers = c(50, 50)
 #' covMat = simBernCovar(covProbMat, nMembers)
 #' specClustCov(covMat, nBlocks = 2)
-specClustCov <- function(covMat, nBlocks, nIter = 10, center = F) {
+specClustCov <- function(covMat, nBlocks, nIter = 20, center = F, jit = F) {
 
     #center and normalize columns
     covMat = scale(covMat, center = center,
@@ -72,6 +76,12 @@ specClustCov <- function(covMat, nBlocks, nIter = 10, center = F) {
     
     svdDecomp = svd(covMat)
 
+    # if the number of unique centers in the data is not much greater
+    # than nIter bigkmeans throws an error, to prevent this jitter first col
+    if(jit == T) {
+        svdDecomp$u[,1] = jitter(svdDecomp$u[,1])
+    }
+    
     kmeansResult = bigkmeans(svdDecomp$u[,1:nBlocks], nBlocks,
         nstart = nIter)
     
