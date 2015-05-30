@@ -46,7 +46,7 @@ p1 = ggplot(df, aes(i, j, fill = x)) +
             geom_vline(xintercept = border)
     }
 
-    print(p1)
+    p1
 }
 
 #' Plots the Stochastic Blockmodel.
