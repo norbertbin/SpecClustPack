@@ -19,6 +19,9 @@ plotAdj <- function(adjMat, membership = NULL, lines = T) {
         df$j = newOrder[df$j]
     }
 
+    # reorder j to plot 1,1 in upper left hand corner
+    df$j = max(df$j) - df$j + 1
+
 p1 = ggplot(df, aes(i, j, fill = x)) +
      geom_raster(hjust=0, vjust=0) +
      theme(axis.line=element_blank(),
@@ -42,7 +45,7 @@ p1 = ggplot(df, aes(i, j, fill = x)) +
 
     if(!is.null(membership) & lines) {
         border = c(0, cumsum(table(membership)))
-        p1 = p1 + geom_hline(yintercept = border) +
+        p1 = p1 + geom_hline(yintercept = max(border) - border) +
             geom_vline(xintercept = border)
     }
 
