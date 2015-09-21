@@ -9,7 +9,6 @@
 #' @param method The form of the adjacency matrix to be used.
 #' @param rowNorm True if row normalization should be
 #' done before running kmeans.
-#' @param enhancedTuning If true, then the enhanced tuning procedure is used.
 #' @param center A boolean indicating if the covariate matrix columns
 #' should be centered.
 #' @param verbose A boolean indicating if casc output should include eigendecomposition.
@@ -25,7 +24,7 @@
 #' @keywords spectral clustering
 casc <- function(adjMat, covMat, nBlocks, nPoints = 100,
                  method = "regLaplacian", rowNorm = F,
-                 enhancedTuning = F, center = F, verbose = F,
+                 center = F, verbose = F,
                  assortative = F, randStarts = 20, epsilon = .05) {
 
     # Matrix has Namespace problems when using dsCMatrix
@@ -37,7 +36,7 @@ casc <- function(adjMat, covMat, nBlocks, nPoints = 100,
 
     # return
     getCascClusters(adjMat, covMat, nBlocks, nPoints,
-                            rowNorm, enhancedTuning, verbose,
+                            rowNorm, verbose,
                             assortative, randStarts, epsilon)    
 }
 
@@ -130,7 +129,7 @@ getGraphMatrix = function(adjacencyMat, method) {
 # returns CASC optimal h tuning parameter SVD
 # ---------------------------------------------------------------------
 getCascClusters = function(graphMat, covariates, nBlocks,
-    nPoints, rowNorm, enhancedTuning, verbose, assortative,
+    nPoints, rowNorm, verbose, assortative,
     randStarts, epsilon) {
     
     rangehTuning = getTuningRange(graphMat, covariates, nBlocks, 
@@ -152,42 +151,7 @@ getCascClusters = function(graphMat, covariates, nBlocks,
         gapVec[i] = cascResults$singGap
     }
 
-# get transition points of static eigenvectors
-    subspaces = getSubspaces(orthoX, orthoL, nPoints, epsilon)
-    nSubspaces = length(subspaces$subintervalStart)    
-
-    if((enhancedTuning == T) & (nSubspaces > 1)) {
-
-        subMinIndex = vector(length = nSubspaces)
-        subMaxIndex = vector(length = nSubspaces)
-        for(i in 1:nSubspaces) {
-             subMinIndex[i] = which.min(wcssVec[
-                            subspaces$subintervalStart[i]:
-                                subspaces$subintervalEnd[i]]) +
-                                    subspaces$subintervalStart[i] - 1
-            subMaxIndex[i] = which.max(wcssVec[
-                           subspaces$subintervalStart[i]:
-                               subspaces$subintervalEnd[i]]) +
-                                   subspaces$subintervalStart[i] - 1
-        }
-
-        # keep only those intervals that are not dominated in terms of wcss
-         includeVec = (rowSums(outer(wcssVec[subMinIndex], wcssVec[subMaxIndex],
-                       function(x, y) {x > y})) == 0)
-        
-        minCountSubspaces = ((1:nSubspaces)[includeVec == 1])[
-                             which.min(subspaces$orthoCounts[includeVec == 1])]
-
-        # min WCSS on most overlapping set of subspaces
-        startIndex = subspaces$subintervalStart[minCountSubspaces]
-        endIndex = subspaces$subintervalEnd[minCountSubspaces]
-        minInterval = unlist(apply(cbind(startIndex, endIndex), 1, function(x)
-            {x[1]:x[2]}))
-        minWcssSubindex = which.min(wcssVec[minInterval])
-        hOpt = (hTuningSeq[minInterval])[minWcssSubindex]
-    } else {
-        hOpt = hTuningSeq[which.min(wcssVec)]
-    }
+    hOpt = hTuningSeq[which.min(wcssVec)]
 
     hOptResults = getCascResults(graphMat, covariates, hOpt, nBlocks, rowNorm, 
         verbose, assortative, randStarts)
@@ -332,39 +296,6 @@ getTuningRange = function(graphMatrix, covariates, nBlocks,
 
     # return
     list( hmax = hmax, hmin = hmin )
-}
-
-# ---------------------------------------------------------------------
-# Finds leading subspace discontinuities.
-# Returns the start and end of a continuous interval and
-# the number of orthogonal components in the leading subspace
-# on the interval.
-# ---------------------------------------------------------------------
-getSubspaces = function(orthoX, orthoL, nPoints, epsilon) {
-
-    indicatorOut = vector(length = nPoints)
-    indicatorIn = vector(length = nPoints)
-    
-    for(i in 1:(nPoints - 1)) {
-        if((orthoX[i] < epsilon) & (orthoX[i+1] > epsilon)) {
-            indicatorOut[i+1] = 1
-        }
-        else if((orthoL[i+1] < epsilon) & (orthoL[i] > epsilon)) {
-            indicatorIn[i+1] = 1
-        }
-    }
-
-    orthoCounts = cumsum(indicatorIn) - cumsum(indicatorOut) +
-        max(cumsum(indicatorOut))
-    subintervalStart = unique(c(which(indicatorIn == 1),
-        which(indicatorOut == 1)))
-    subintervalEnd = sort(c(subintervalStart-1, nPoints))
-    subintervalStart = sort(c(1, subintervalStart))
-    orthoCounts = orthoCounts[subintervalStart]
-
-    return( list(orthoCounts = orthoCounts,
-                 subintervalStart = subintervalStart,
-                 subintervalEnd = subintervalEnd) )
 }
 
 # ---------------------------------------------------------------------
