@@ -26,8 +26,7 @@ specClust <- function(adjMat, nBlocks, method = "regLaplacian",
 
     # eigsDecomp = eigs(similarityMat, nBlocks + 3)
 
-    eigsDecomp = irlba(similarityMat, nu = nBlocks + 1, nv = 0, 
-        m_b = max(20, 2*nBlocks))
+    eigsDecomp = irlba(similarityMat, nu = nBlocks + 1, nv = 0)
     eigsDecomp = list(vectors = eigsDecomp$u,  values = eigsDecomp$d)
 
     if(rowNorm == T) {
