@@ -14,7 +14,6 @@
 #' @param verbose A boolean indicating if casc output should include eigendecomposition.
 #' @param assortative A boolean indicating if the assortative version of casc should be used.
 #' @param randStarts Number of random restarts for kmeans.
-#' @param epsilon A threshold for identifying subspace discontinuities.
 #'
 #' @export
 #' @return A list with node cluster assignments, the
@@ -25,7 +24,7 @@
 casc <- function(adjMat, covMat, nBlocks, nPoints = 100,
                  method = "regLaplacian", rowNorm = F,
                  center = F, verbose = F,
-                 assortative = F, randStarts = 20, epsilon = .05) {
+                 assortative = F, randStarts = 20) {
 
     # Matrix has Namespace problems when using dsCMatrix
     adjMat = as(adjMat, "dgCMatrix")
@@ -37,7 +36,7 @@ casc <- function(adjMat, covMat, nBlocks, nPoints = 100,
     # return
     getCascClusters(adjMat, covMat, nBlocks, nPoints,
                             rowNorm, verbose,
-                            assortative, randStarts, epsilon)    
+                            assortative, randStarts)    
 }
 
 # CCA
@@ -130,7 +129,7 @@ getGraphMatrix = function(adjacencyMat, method) {
 # ---------------------------------------------------------------------
 getCascClusters = function(graphMat, covariates, nBlocks,
     nPoints, rowNorm, verbose, assortative,
-    randStarts, epsilon) {
+    randStarts) {
     
     rangehTuning = getTuningRange(graphMat, covariates, nBlocks, 
         assortative)

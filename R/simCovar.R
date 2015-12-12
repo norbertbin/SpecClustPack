@@ -9,7 +9,7 @@
 #' @return A matrix of Bernoulli covariates with a block probability structure.
 #'
 #' @examples
-#' covProbMat = matrix(c(.6, .2, .2, .6), nrow = 2)
+#' covProbMat = matrix(c(.8, .2, .2, .8), nrow = 2)
 #' nMembers = c(50, 50)
 #' simBernCovar(covProbMat, nMembers)
 simBernCovar <- function(covProbMat, nMembers) {
