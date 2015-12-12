@@ -2,7 +2,8 @@ Package: SpecClustPack
 Title: Spectral Clustering for Network Analysis
 Version: 0.2
 Authors@R: "Norbert Binkiewicz <norbertbin@gmail.com> [aut, cre]"
-Description: Contains useful functions for spectral clustering of graphs and attributed graphs.
+Description: Contains useful functions for spectral clustering of graphs and
+    attributed graphs.
 Depends:
     R (>= 3.0.2),
     Matrix,
@@ -13,3 +14,4 @@ Depends:
     ggplot2
 License: GPL-3
 LazyData: true
+RoxygenNote: 5.0.1
