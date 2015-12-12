@@ -245,7 +245,7 @@ getCascSvd = function(graphMat, covariates, hTuningParam, nBlocks, assortative) 
     }
 
     sDecomp = irlba(A = graphMat, nu = nBlocks + 1, nv = 0,
-        matmul = matMult)
+        mult = matMult)
 
     # return
     list(eVec = sDecomp$u[, 1:nBlocks],
