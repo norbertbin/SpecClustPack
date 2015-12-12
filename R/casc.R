@@ -268,8 +268,7 @@ getTuningRange = function(graphMatrix, covariates, nBlocks,
         # eigenValGraph = eigs(graphMatrix, nBlocks + 2, which = "LR",
         #     opts = list(retvec = F))$values #eigenvalues only
 
-        eigenValGraph = irlba(graphMatrix, nu = nBlocks + 1, nv = 0, 
-            m_b = max(20, 2*nBlocks))$d
+        eigenValGraph = irlba(graphMatrix, nu = nBlocks + 1, nv = 0)$d
 
         if(nCov > nBlocks) {
             hmax = eigenValGraph[1]/(singValCov[nBlocks]^2 - singValCov[nBlocks+1]^2) 
@@ -282,8 +281,7 @@ getTuningRange = function(graphMatrix, covariates, nBlocks,
         #     opts = list(retvec = F))$values #eigenvalues only
         # eigenValGraph = sort(eigenValGraph^2, decreasing=T)
 
-        eigenValGraph = (irlba(graphMatrix, nu = nBlocks + 1, nv = 0, 
-            m_b = max(20, 2*nBlocks))$d)^2
+        eigenValGraph = (irlba(graphMatrix, nu = nBlocks + 1, nv = 0)$d)^2
 
         if(nCov > nBlocks) {
             hmax = eigenValGraph[1]/(singValCov[nBlocks]^2 - singValCov[nBlocks+1]^2) 
