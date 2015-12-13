@@ -236,12 +236,12 @@ getCascSvd = function(graphMat, covariates, hTuningParam, nBlocks, assortative) 
         matMult = function(x, y) {
             x = t(x)
             if(is.vector(x) || ncol(x)==1 || nrow(x)==1) {
-                t(as.numeric(graphMat %*% x + 
-                    hTuningParam * covariates %*% crossprod(covariates, x)))
+                t(graphMat %*% x + 
+                    hTuningParam * covariates %*% crossprod(covariates, x))
             }
             else {
-                t(as.numeric(graphMat %*% y + 
-                    hTuningParam * covariates %*% crossprod(covariates, y)))
+                t(graphMat %*% y + 
+                    hTuningParam * covariates %*% crossprod(covariates, y))
             }
         }
     } else {
