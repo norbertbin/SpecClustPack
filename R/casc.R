@@ -233,14 +233,26 @@ getCascSvd = function(graphMat, covariates, hTuningParam, nBlocks, assortative) 
     # using irlba
     # define custom matrix vector multiply function
     if(assortative == T) {
-        matMult = function(A, x, transpose) {
-            as.numeric(graphMat %*% x + 
-                hTuningParam * covariates %*% crossprod(covariates, x))
+        matMult = function(x, y) {
+            if(is.vector(x)) {
+                as.numeric(graphMat %*% x + 
+                    hTuningParam * covariates %*% crossprod(covariates, x))
+            }
+            else {
+                as.numeric(graphMat %*% y + 
+                    hTuningParam * covariates %*% crossprod(covariates, y))
+            }
         }
     } else {
-        matMult = function(A, x, transpose) {
-            as.numeric(graphMat %*% (graphMat %*% x) + 
-                hTuningParam * covariates %*% crossprod(covariates, x))
+        matMult = function(x, y) {
+            if(is.vector(x)) {
+                as.numeric(graphMat %*% (graphMat %*% x) + 
+                    hTuningParam * covariates %*% crossprod(covariates, x))
+            }
+            else {
+                as.numeric(graphMat %*% (graphMat %*% y) + 
+                    hTuningParam * covariates %*% crossprod(covariates, y))
+            }
         }
     }
 
