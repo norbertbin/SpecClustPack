@@ -147,7 +147,7 @@ getCascClusters = function(graphMat, covariates, nBlocks,
         orthoX[i] = cascResults$orthoX
         orthoL[i] = cascResults$orthoL
         wcssVec[i] = cascResults$wcss
-        gapVec[i] = cascResults$singGap
+        gapVec[i] = cascResults$eigenGap
     }
 
     hOpt = hTuningSeq[which.min(wcssVec)]
@@ -189,7 +189,7 @@ getCascResults = function(graphMat, covariates, hTuningParam,
     if(verbose == F) {
         return( list(cluster = kmeansResults$cluster,
             wcss = kmeansResults$tot.withinss,
-            singGap = cascSvd$eVal[nBlocks] -
+            eigenGap = cascSvd$eVal[nBlocks] -
                 cascSvd$eVal[nBlocks + 1],
             orthoL = ortho$orthoL,
             orthoX = ortho$orthoX) )
@@ -234,25 +234,25 @@ getCascSvd = function(graphMat, covariates, hTuningParam, nBlocks, assortative) 
     # define custom matrix vector multiply function
     if(assortative == T) {
         matMult = function(x, y) {
-            x = t(x)
             if(is.vector(x) || ncol(x)==1 || nrow(x)==1) {
-                t(graphMat %*% x + 
-                    hTuningParam * covariates %*% crossprod(covariates, x))
+                x = t(x)
+                t(as.matrix(graphMat %*% x + 
+                    hTuningParam * covariates %*% crossprod(covariates, x)))
             }
             else {
-                t(graphMat %*% y + 
+                as.matrix(graphMat %*% y + 
                     hTuningParam * covariates %*% crossprod(covariates, y))
             }
         }
     } else {
         matMult = function(x, y) {
-            x = t(x)
             if(is.vector(x) || ncol(x)==1 || nrow(x)==1) {
-                t(graphMat %*% (graphMat %*% x) + 
-                    hTuningParam * covariates %*% crossprod(covariates, x))
+                x = t(x)
+                t(as.matrix(graphMat %*% (graphMat %*% x) + 
+                    hTuningParam * covariates %*% crossprod(covariates, x)))
             }
             else {
-                t(graphMat %*% (graphMat %*% y) + 
+                as.matrix(graphMat %*% (graphMat %*% y) + 
                     hTuningParam * covariates %*% crossprod(covariates, y))
             }
         }

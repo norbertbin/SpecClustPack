@@ -88,9 +88,54 @@ estSBM(adjMat, clusters)
 ## [2,] 0.08333333 0.53333333
 ```
 
+Simulate Node Covariates
+===
+```r
+covProbMat = matrix(c(.8,.2,.2,.8), nrow=2)
+nMembers = c(5,5)
+
+covMat = simBernCovar(covProbMat, nMembers)
+covMat
+```
+
+```
+## [1,] 1 .
+## [2,] 1 1
+## [3,] 1 .
+## [4,] . .
+## [5,] 1 1
+## [6,] . .
+## [7,] . 1
+## [8,] . 1
+## [9,] 1 1
+##[10,] . 1
+
+```
+
+Covariate-Assisted Spectral Clustering
+===
+The required input for the *casc* function includes an adjacency matrix, *adjMat*, a node covariate matrix, *covMat*, and the number of blocks to be recovered, *nBlocks*. For more details see the documentation. 
+```r
+casc(adjMat, covMat, nBlocks=2)
+```
+
+```
+## $cluster
+## [1] 1 1 1 1 1 2 2 2 2 2
+##
+## $h
+## [1] 0.08101691
+##
+## $wcss
+## [1] 0.1789759
+##
+## $eigenGap
+## [1] 0.06532486
+
+```
+
 Partial Spectral Clustering
 ===
-
 The **partSpecClust** function only runs an eigendecomposition on the adjacency
 matrix of the highest degree nodes in the network and uses the Nystrom 
 extension to approximate the full eigenvectors 
